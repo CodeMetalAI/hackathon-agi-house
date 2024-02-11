@@ -16,14 +16,12 @@ ROB = "e7fe4a252"
 KEYS = "234e5e866"
 XI_KEY = KEYS + ROB
 
-OAI_API = os.getenv("OPENAI_API_KEY")
-XIL_API = os.getenv("XI_API_KEY")
 
 TEMP_AUDIO_FILE_NAME = "audio_temp.mp3"
 INPUT_BEGAN_AUDIO_FILE_NAME = ""
 
-client = openai.OpenAI(api_key=OAI_API)
-elevenlabs.set_api_key(XIL_API)
+client = openai.OpenAI(api_key=API_KEY)
+elevenlabs.set_api_key(XI_KEY)
 
 voice = elevenlabs.Voice(
     voice_id="ehyrDbxlu9pgyBqKxn2P",
@@ -96,28 +94,28 @@ def analyze_image(user_prompt, image_file, instruction=""):
 commands = {}
 
 
-def register_user():
+def register_user(user_prompt):
     speak("Registering user!")
     return
 
 
-def patrol():
+def patrol(user_prompt):
     speak("Beginning patrol!")
     return
 
 
-def sit():
+def sit(user_prompt):
     speak("Sitting down!")
     # robot.sit()
     return
 
 
-def good_boy():
+def good_boy(user_prompt):
     speak("I'm a good boy!")
     return
 
 
-def convo():
+def convo(user_prompt):
     speak(get_model_response(PERSONA_PROMPT + user_prompt))
     return
 
@@ -153,6 +151,7 @@ def main():
     sample_name = TEMP_AUDIO_FILE_NAME
     cmd = f'arecord -vv --format=cd --device={os.environ["AUDIO_INPUT_DEVICE"]} -r 48000 --duration=10 -c 1 {sample_name}'
     print("Capturing audio")
+    os.system(cmd)
     user_prompt = get_audio_transcript()
     command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
     if command == "nocommand" or commands.get(command) == None:
