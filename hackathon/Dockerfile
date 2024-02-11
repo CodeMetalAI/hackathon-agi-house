@@ -15,6 +15,11 @@ RUN echo "I am running on $BUILDPLATFORM, building for $TARGETPLATFORM"
 
 
 COPY requirements.txt requirements.txt
+
+RUN echo "OPEN_API_KEY=$OPENAI_API_KEY\n\
+XI_API_KEY=$XI_API_KEY\n\
+>> .env \
+
 RUN python3.8 -m pip install -r requirements.txt
 COPY . .
 
