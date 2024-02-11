@@ -186,12 +186,18 @@ def main():
         print("Capturing audio")
         os.system(cmd)
         user_prompt = get_audio_transcript()
-        command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
-        if command == "nocommand" or commands.get(command) == None:
-            # print("no response")
+
+        if user_prompt == "":
             continue
+        elif check_equality_f1(user_prompt.lower(), "stop."):
+            break
         else:
-            commands[command](user_prompt)
+            command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
+
+            if command == "nocommand" or commands.get(command) == None:
+                continue
+            else:
+                commands[command](user_prompt)
 
 
 if __name__ == '__main__':
