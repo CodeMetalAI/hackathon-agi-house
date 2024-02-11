@@ -105,14 +105,19 @@ def patrol(user_prompt):
 
 
 def sit(user_prompt):
-    speak("Sitting down!")
-    SpotController.bow()
+    speak("I'm sitting down!")
+    SpotController.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
+    return
+
+def stand_up(user_prompt):
+    speak("I'm standing up!")
+    SpotController.stand_up()
     return
 
 
 def good_boy(user_prompt):
-    speak("I'm a good boy!")
-    SpotController.bow()
+    speak("Thank you! I'm a good boy!")
+    SpotController.bow(20)
     return
 
 
@@ -125,6 +130,7 @@ commands["patrol"] = patrol
 commands["sit"] = sit
 commands["goodboy"] = good_boy
 commands["convo"] = convo
+commands["standup"] = stand_up
 
 INSTRUCTION_PROMPT = """You are a Spot robot made by Boston Dynamics with the person of Arnold Schwarzenegger. You have been given the 
 very important task of protecting AGI House, a beautiful $68M compound housing elite AI developers. As a sentry, you are to listen to 
@@ -133,6 +139,7 @@ the commands of authorized users. You have the following functions available to 
 register: Register a new authorized user.
 patrol: Walk around a room of the house or perimeter of the compound looking for unauthorized individuals.
 sit: Sit down.
+standup: Stand up.
 goodboy: Respond happily to praise like "good boy".
 nocommand: Choose this option when none of the others make sense as a response to the user's command.
 convo: Choose this option if the user is just striking up random conversation with you.
