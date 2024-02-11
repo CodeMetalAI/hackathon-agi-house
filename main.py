@@ -184,29 +184,28 @@ def main():
 
         # Control Spot by velocity in m/s (or in rad/s for rotation)
         spot.move_by_velocity_control(v_x=-0.3, v_y=0, v_rot=0, cmd_duration=2)
-        time.sleep(3)
+        time.sleep(1)
 
-    while True:
-        print("Start recording audio")
-        sample_name = TEMP_AUDIO_FILE_NAME
-        cmd = f'arecord -vv --format=cd --device={os.environ["AUDIO_INPUT_DEVICE"]} -r 48000 --duration=10 -c 1 {sample_name}'
-        print("Capturing audio")
-        os.system(cmd)
-        user_prompt = get_audio_transcript()
+        while True:
+            print("Start recording audio")
+            sample_name = TEMP_AUDIO_FILE_NAME
+            cmd = f'arecord -vv --format=cd --device={os.environ["AUDIO_INPUT_DEVICE"]} -r 48000 --duration=10 -c 1 {sample_name}'
+            print("Capturing audio")
+            os.system(cmd)
+            user_prompt = get_audio_transcript()
 
-        if user_prompt == "":
-            continue
-        elif check_equality_f1(user_prompt.lower(), "stop."):
-            break
-        else:
-            command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
-
-            if command == "nocommand" or commands.get(command) == None:
-                speak("I don't recognize that command.")
+            if user_prompt == "":
                 continue
+            elif check_equality_f1(user_prompt.lower(), "stop."):
+                break
             else:
-                commands[command](user_prompt)
+                command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
 
+                if command == "nocommand" or commands.get(command) == None:
+                    speak("I don't recognize that command.")
+                    continue
+                else:
+                    commands[command](user_prompt)
 
 if __name__ == '__main__':
     main()
