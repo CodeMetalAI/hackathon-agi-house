@@ -48,7 +48,7 @@ def speak(content):
     )
 
     elevenlabs.play(stream)
-    elevenlabs.save(stream, "test.mp3")
+    # elevenlabs.save(stream, "test.mp3")
 
 
 def get_model_response(user_prompt, instruction=""):
@@ -106,12 +106,13 @@ def patrol(user_prompt):
 
 def sit(user_prompt):
     speak("Sitting down!")
-    # robot.sit()
+    SpotController.bow()
     return
 
 
 def good_boy(user_prompt):
     speak("I'm a good boy!")
+    SpotController.bow()
     return
 
 
@@ -146,19 +147,6 @@ random conversation with you. You may respond in character how you like or with 
 
 
 def main():
-
-    print("Start recording audio")
-    sample_name = TEMP_AUDIO_FILE_NAME
-    cmd = f'arecord -vv --format=cd --device={os.environ["AUDIO_INPUT_DEVICE"]} -r 48000 --duration=10 -c 1 {sample_name}'
-    print("Capturing audio")
-    os.system(cmd)
-    user_prompt = get_audio_transcript()
-    command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
-    if command == "nocommand" or commands.get(command) == None:
-        print("no response")
-    else:
-        commands[command]()
-
     #print(cmd)
     #os.system(cmd)
     #print("Playing sound")
@@ -190,6 +178,20 @@ def main():
         # Control Spot by velocity in m/s (or in rad/s for rotation)
         spot.move_by_velocity_control(v_x=-0.3, v_y=0, v_rot=0, cmd_duration=2)
         time.sleep(3)
+
+    while True:
+        print("Start recording audio")
+        sample_name = TEMP_AUDIO_FILE_NAME
+        cmd = f'arecord -vv --format=cd --device={os.environ["AUDIO_INPUT_DEVICE"]} -r 48000 --duration=10 -c 1 {sample_name}'
+        print("Capturing audio")
+        os.system(cmd)
+        user_prompt = get_audio_transcript()
+        command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
+        if command == "nocommand" or commands.get(command) == None:
+            # print("no response")
+            continue
+        else:
+            commands[command](user_prompt)
 
 
 if __name__ == '__main__':
