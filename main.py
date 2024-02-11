@@ -28,6 +28,7 @@ voice = elevenlabs.Voice(
     settings=elevenlabs.VoiceSettings(stability=0, style=1, similarity_boost=1)
 )
 
+controller = SpotController(username=SPOT_USERNAME, password=SPOT_PASSWORD, robot_ip=ROBOT_IP)
 
 def check_equality_f1(a, b, threshold=1):
     # predictions = [{"id": str(idx), "prediction_text": prediction.strip()} for idx, prediction in enumerate([a])]
@@ -105,18 +106,18 @@ def patrol(user_prompt):
 
 def sit(user_prompt):
     speak("I'm sitting down!")
-    SpotController.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
+    controller.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
     return
 
 def stand_up(user_prompt):
     speak("I'm standing up!")
-    SpotController.stand_up()
+    controller.stand_up()
     return
 
 
 def good_boy(user_prompt):
     speak("Thank you! I'm a good boy!")
-    SpotController.bow(20)
+    controller.bow(20)
     return
 
 
@@ -167,7 +168,7 @@ def main():
 
     # Use wrapper in context manager to lease control, turn on E-Stop, power on the robot and stand up at start
     # and to return lease + sit down at the end
-    with SpotController(username=SPOT_USERNAME, password=SPOT_PASSWORD, robot_ip=ROBOT_IP) as spot:
+    with controller as spot:
         time.sleep(2)
 
         # Move head to specified positions with intermediate time.sleep
