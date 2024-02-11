@@ -1,11 +1,5 @@
-from dotenv import load_dotenv
-import os
+api_key = "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"
 import requests
-
-load_dotenv()
-
-api_key = os.getenv("OPENAI_API_KEY")
-XIL_API = os.getenv("XI_API_KEY")
 
 def image_description(base64_image):
     headers = {
@@ -21,7 +15,7 @@ def image_description(base64_image):
         "content": [
             {
                 "type": "text",
-                "text": "Is there a person in the image? If there are multiple, consider the closest. Answear considering this result schema: { distance: ('far', 'optimal', 'near'), appearance: str }"
+                "text": "Is there a person in the image? If there are multiple, consider the closest. Answear considering this result schema: { distance: ('far', 'optimal', 'near'), speech_to_the_person: str, emotion: str }. The appearance should be provided as if it is an arnold schwarzenegger movie"
             },
             {
                 "type": "image_url",
@@ -37,6 +31,4 @@ def image_description(base64_image):
 
     response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=payload).json()
 
-    print(response)
-
-    return response
+    return response["choices"][0]["message"]["content"]
