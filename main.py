@@ -12,8 +12,8 @@ SEC = "UfUuIt6BGOnT3BlbkFJC6R2ukUK1xn"
 API = "sk-PIYRoqpoX"
 API_KEY = API + SEC + KEY
 
-ROB = "e7fe4a252"
-KEYS = "234e5e866"
+ROB = "f8d7e07ee72dbb432"
+KEYS = "223e3d7af7f2657"
 XI_KEY = KEYS + ROB
 
 
@@ -195,6 +195,7 @@ def main():
             command = get_model_response(user_prompt, INSTRUCTION_PROMPT)
 
             if command == "nocommand" or commands.get(command) == None:
+                speak("I don't recognize that command.")
                 continue
             else:
                 commands[command](user_prompt)
