@@ -4,7 +4,7 @@ import threading
 import evaluate
 from dotenv import load_dotenv
 import os
-import robot
+# import robot
 
 load_dotenv()
 
@@ -38,12 +38,15 @@ def speak(content):
     print("Streaming spoken response")
     stream = elevenlabs.generate(
         text = content,
-        voice = "Rachel",
-        model = "eleven_monolingual_v1",
-        stream=True
+        voice = "InspectorMax",
+        model = "eleven_multilingual_v2",
+        # stream=True
     )
 
-    elevenlabs.stream(stream)
+    elevenlabs.play(stream)
+    elevenlabs.save(stream)
+
+# speak("TEST")
 
 def get_model_response(user_prompt, instruction = ""):
     chat_completion = client.chat.completions.create(
@@ -65,7 +68,6 @@ def get_audio_transcript():
     )
 
     user_prompt = transcript.text
-
     audio_file.close()
 
     print(user_prompt)
@@ -86,20 +88,20 @@ def analyze_image(user_prompt, image_file, instruction=""):
 commands = {}
 
 def register_user():
-    print("Register user")
+    speak("Registering user!")
     return
 
 def patrol():
-    print("Patrol")
+    speak("Beginning patrol!")
     return
 
 def sit():
-    print("Sit")
-    robot.sit()
+    speak("Sitting down!")
+    # robot.sit()
     return
 
 def good_boy():
-    print("Good boy")
+    speak("I'm a good boy!")
     return
 
 commands["register"] = register_user
@@ -120,6 +122,7 @@ nocommand: Choose this option when none of the others make sense as a response t
 Respond only with one of these commands and no other text output.
 
 """
+
 with sr.Microphone() as source:
     recorder.adjust_for_ambient_noise(source)
 
