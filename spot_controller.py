@@ -130,6 +130,9 @@ class SpotController:
         self.move_head_in_points(yaws=[0], pitches=[0], rolls=[0])
         self.robot.power_off(cut_immediately=False)
 
+    def stand_up(self):
+        blocking_stand(self.command_client, timeout_sec=10)
+
     def make_stance(self, x_offset, y_offset):
         state = self.state_client.get_robot_state()
         vo_T_body = get_se2_a_tform_b(state.kinematic_state.transforms_snapshot,
