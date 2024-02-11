@@ -1,6 +1,6 @@
 #FROM ghcr.io/merklebot/hackathon-arm-image:master as build
 FROM scratch
-gi
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
