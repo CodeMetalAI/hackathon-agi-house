@@ -104,7 +104,7 @@ def good_boy():
     speak("I'm a good boy!")
     return
 
-def convo():
+def convo(user_prompt):
     speak(get_model_response(PERSONA_PROMPT + user_prompt))
     return
 
@@ -160,5 +160,5 @@ while True:
         if command == "nocommand" or commands.get(command) == None:
             continue
         else:
-            t = threading.Thread(target=commands[command], args=())
+            t = threading.Thread(target=commands[command], args=(user_prompt))
             t.start()
