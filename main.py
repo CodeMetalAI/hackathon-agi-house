@@ -98,7 +98,6 @@ def register_user(user_prompt):
     speak("Registering user!")
     return
 
-
 def patrol(user_prompt):
     speak("Beginning patrol!")
     return
