@@ -15,13 +15,13 @@ PORT = int(os.getenv("CAMERA_PORT"))
 class Camera():
 
     def export_to_server(self, photo):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((HOST, PORT))
-        self.socket.sendall(photo)
-        self.socket.close()
-    
-    def __init__(self):
-        pass
+        try:
+            self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            self.socket.connect((HOST, PORT))
+            self.socket.sendall(photo)
+            self.socket.close()
+        except:
+            print(f"Error sending photo to {HOST}:{PORT}")
 
     def get_photo(self):
         camera_capture = cv2.VideoCapture(0)
