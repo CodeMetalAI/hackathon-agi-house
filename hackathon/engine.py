@@ -87,20 +87,20 @@ def analyze_image(user_prompt, image_file, instruction=""):
 # Behavior functions
 commands = {}
 
-def register_user():
+def register_user(user_prompt):
     speak("Registering user!")
     return
 
-def patrol():
+def patrol(user_prompt):
     speak("Beginning patrol!")
     return
 
-def sit():
+def sit(user_prompt):
     speak("Sitting down!")
     # robot.sit()
     return
 
-def good_boy():
+def good_boy(user_prompt):
     speak("I'm a good boy!")
     return
 
@@ -160,5 +160,4 @@ while True:
         if command == "nocommand" or commands.get(command) == None:
             continue
         else:
-            t = threading.Thread(target=commands[command], args=(user_prompt))
-            t.start()
+            commands[command](user_prompt)
